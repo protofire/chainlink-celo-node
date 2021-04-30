@@ -1,0 +1,6 @@
+node_modules/
+external-adapters-js/
+
+.env.chainlink
+.env.postgres
+.env
