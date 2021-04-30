@@ -3,14 +3,17 @@ const { ethers } = require("ethers")
 
 function getAccount(kit) {
     if (!process.env.PRIVATE_KEY) {
-        throw new Error("No private key set.")
+        throw new Error("No private key set. Specify a PRIVATE_KEY environment variable.")
     }
     return kit.web3.eth.accounts.privateKeyToAccount(process.env.PRIVATE_KEY)
 }
 
 async function celoSetup() {
+    if (!process.env.CELO_RPC) {
+        throw new Error("No Celo RPC endpoint specified. Specify a CELO_RPC environment variable.")
+    }
     const kit = newKit(
-        process.env.CELO_RPC || "https://alfajores-forno.celo-testnet.org"
+        process.env.CELO_RPC
     )
     const account = getAccount(kit)
     kit.addAccount(account.privateKey)

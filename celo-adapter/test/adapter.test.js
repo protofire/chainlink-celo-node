@@ -40,6 +40,10 @@ describe("Readable ABI decoding", () => {
 })
 
 describe("Getting a CeloContractKit Instance", () => {
+    // before...
+    process.env.PRIVATE_KEY = "0x0000000000000000000000000000000000000000000000000000000000000001"
+    process.env.CELO_RPC = "https://alfajores-forno.celo-testnet.org"
+
     test("Should fail if no private key is set", async () => {
         process.env.PRIVATE_KEY = null
         expect(celoSetup()).rejects.toThrow()
@@ -50,6 +54,14 @@ describe("Getting a CeloContractKit Instance", () => {
     })
     test("Should succeed if there is a valid private key set", async () => {
         process.env.PRIVATE_KEY = "0x0000000000000000000000000000000000000000000000000000000000000001"
+        expect(celoSetup()).resolves.not.toThrow()
+    })
+    test("Should fail if there is no valid RPC set", async () => {
+        process.env.CELO_RPC = null
+        expect(celoSetup()).rejects.toThrow()
+    })
+    test("Should succeed if there is a valid RPC set", async () => {
+        process.env.CELO_RPC = "https://alfajores-forno.celo-testnet.org"
         expect(celoSetup()).resolves.not.toThrow()
     })
 })
