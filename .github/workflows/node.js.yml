@@ -25,6 +25,7 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
-    - run: cd celo-adapter
-    - run: npm install
-    - run: npm run test
+    - run: |
+        cd celo-adapter
+        npm install
+        npm run test
