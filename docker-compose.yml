@@ -1,4 +1,3 @@
-# docker run -p 6688:6688 -v ~/.chainlink-avlanche:/chainlink -it --env-file=.env --network host smartcontract/chainlink:latest local n
 version: "3.5"
 services:
   chainlink:
@@ -17,7 +16,7 @@ services:
   celo-adapter:
     image: celo_adapter:latest
     environment: 
-      PRIVATE_KEY: "0xa0028315d59bfea4f2f317fa1ede69a65eba66e96e73ba156019e5ffae827d11"
+      PRIVATE_KEY: "0x000000000000000000000000000000000000000000000000000000000000001"
       PORT: 8080
       CELO_RPC: "https://alfajores-forno.celo-testnet.org"
   chainlink-db:
