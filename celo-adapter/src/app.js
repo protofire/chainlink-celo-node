@@ -61,9 +61,6 @@ async function setupExpress(contractKit) {
             })
         }
 
-        console.log(req.headers)
-        console.log(req.body)
-
         const id = req.body.id
         const functionSelector = "submit(uint256,int256)"
         const precision = req.body.data.precision
