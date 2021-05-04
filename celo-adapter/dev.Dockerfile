@@ -1,0 +1,10 @@
+
+FROM node:14
+
+ENV PORT=8080
+EXPOSE 8080
+
+VOLUME /app
+WORKDIR /app
+
+ENTRYPOINT [ "yarn", "start" ]

@@ -1,0 +1,34 @@
+# docker run -p 6688:6688 -v ~/.chainlink-avlanche:/chainlink -it --env-file=.env --network host smartcontract/chainlink:latest local n
+version: "3.5"
+services:
+  chainlink:
+    image: smartcontract/chainlink:latest
+    depends_on:
+      - chainlink-db
+      - chainlink-external-cryptocompare
+      - celo-adapter
+    ports:
+      - "6688:6688"
+    volumes:
+      - ./data:/chainlink
+    env_file:
+        - .env.chainlink
+    command: local n -p /chainlink/password -a /chainlink/api
+  celo-adapter:
+    image: celo_adapter_test:latest
+    environment: 
+      PRIVATE_KEY: "0xa0028315d59bfea4f2f317fa1ede69a65eba66e96e73ba156019e5ffae827d11"
+      PORT: 8080
+      CELO_RPC: "https://alfajores-forno.celo-testnet.org"
+    volumes:
+      - ./celo-adapter:/app
+  chainlink-db:
+    image: postgres:9
+    env_file:
+        - .env.postgres
+    ports:
+      - "5432:5432"
+  chainlink-external-cryptocompare:
+    image: cryptocompare-adapter:latest
+    environment:
+      API_KEY: 8fd4c492d34fb15ff7dcfd629be49cf4dd0aea136704d9a81100911c702e1391

@@ -1,14 +1,16 @@
+const Big = require("bignumber.js")
 const { celoSetup, decodeSignature } = require("../src/celo")
+const { bigNumberifyWithPrecision } = require("../src/flux")
 
 describe("Readable ABI decoding", () => {
     test("Success cases", () => {
         const EXPECTED = [
-            ["submit(uint256)", {name: "submit", type: "function", inputs: [ 'uint256' ]}],
-            ["submit(bytes32)", {name: "submit", type: "function", inputs: [ 'bytes32' ]}],
-            ["something_else()", {name: "something_else", type: "function", inputs: []}],
-            ["submit(bytes32,address)", {name: "submit", type: "function", inputs: [ 'bytes32', 'address' ]}],
-            ["anotherFunction(bytes32,address)", {name: "anotherFunction", type: "function", inputs: [ 'bytes32', 'address' ]}],
-            ["call()", {name: "call", type: "function", inputs: []}],
+            ["submit(uint256)", {name: "submit(uint256)", type: "function", inputs: [ 'uint256' ]}],
+            ["submit(bytes32)", {name: "submit(bytes32)", type: "function", inputs: [ 'bytes32' ]}],
+            ["something_else()", {name: "something_else()", type: "function", inputs: []}],
+            ["submit(bytes32,address)", {name: "submit(bytes32,address)", type: "function", inputs: [ 'bytes32', 'address' ]}],
+            ["anotherFunction(bytes32,address)", {name: "anotherFunction(bytes32,address)", type: "function", inputs: [ 'bytes32', 'address' ]}],
+            ["call()", {name: "call()", type: "function", inputs: []}],
         ]
 
         for (let [input, result] of EXPECTED) {
@@ -63,5 +65,19 @@ describe("Getting a CeloContractKit Instance", () => {
     test("Should succeed if there is a valid RPC set", async () => {
         process.env.CELO_RPC = "https://alfajores-forno.celo-testnet.org"
         expect(celoSetup()).resolves.not.toThrow()
+    })
+})
+
+describe("Big Number formatter", () => {
+    test("Should return expected values", () => {
+        EXPECTED = [
+            ["1", 8], new Big("100000000"),
+            ["10", 7], new Big("100000000"),
+            ["2750.17", 8], new Big("275017000000")
+        ]
+
+        for (let [args, expected] of EXPECTED) {
+            expect(bigNumberifyWithPrecision(...args)).toEqual(expected)
+        }
     })
 })

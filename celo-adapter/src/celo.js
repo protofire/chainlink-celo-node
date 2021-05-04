@@ -34,23 +34,29 @@ function decodeSignature(readableSelector) {
 
     if (params) {
         return {
-            name: name,
+            name: readableSelector,
             type: "function",
             inputs: params.split(",")
         }
     } else {
         return {
-            name,
+            readableSelector,
             type: "function",
             inputs: []
         }
     }
 } 
 
-async function processTx(destination, readableSelector, data, kit) {
+async function processTx(destination, readableSelector, data, kit, dataPrefix) {
+    const signature = decodeSignature(readableSelector)
+    var dataToEncode = data
+    if (dataPrefix) {
+        dataToEncode = [dataPrefix, ...data]
+    }
+
     const call = kit.web3.eth.abi.encodeFunctionCall(
-        decodeSignature(readableSelector),
-        data?[data]:[]
+        signature,
+        data?dataToEncode:[]
     )
 
     const tx = await kit.sendTransaction({
