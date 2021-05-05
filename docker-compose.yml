@@ -15,10 +15,8 @@ services:
     command: local n -p /chainlink/password -a /chainlink/api
   celo-adapter:
     image: celo_adapter:latest
-    environment: 
-      PRIVATE_KEY: "0x000000000000000000000000000000000000000000000000000000000000001"
-      PORT: 8080
-      CELO_RPC: "https://alfajores-forno.celo-testnet.org"
+    env_file:
+      - .env.adapter
   chainlink-db:
     image: postgres:9
     env_file:
